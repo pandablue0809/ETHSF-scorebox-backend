@@ -7,7 +7,7 @@ from requ.covalentAPIs import covalent_bal_port, covalent_txn
 
 router = APIRouter(
     prefix = '/credit_score',
-    tags = ['Credit Score']
+    tags = ['Covalent HQ']
 )
 
 CHAIN = {

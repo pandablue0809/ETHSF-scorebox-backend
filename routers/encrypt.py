@@ -2,6 +2,7 @@
 from fastapi import APIRouter, status
 from supp.schemas import Encrypt
 from supp.rijndael import compress
+from supp.crud import add_row
 
 router = APIRouter(
     prefix = '/cryptography',
@@ -24,7 +25,7 @@ async def encrypt_score(item: Encrypt):
     Returns:
     - **[object]**: db row
     '''
-    # format score blurb
     row = compress(item)
+    add_row(db, row)
 
     return row
