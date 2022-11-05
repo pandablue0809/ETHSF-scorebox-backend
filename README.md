@@ -6,3 +6,5 @@ Python credit scoring model (ft. Covalent HQ) / off-chain encryptor toolkit
 ```bash
 uvicorn main:app --reload
 ```
+
+Test deployment on Heroku
