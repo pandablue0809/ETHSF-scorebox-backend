@@ -12,5 +12,4 @@ router = APIRouter(
 
 @router.post('/getnft', status_code=status.HTTP_200_OK)
 async def get_nft_assets(item: OpenSeaNFT):
-    '''Try run on uvicorn'''
-    return 'Functionality works just fine'
+    return 'Forgot NFT router. Try now. Should work'
