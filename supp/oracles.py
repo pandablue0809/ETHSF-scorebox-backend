@@ -1,8 +1,10 @@
 '''Basic credit scoring algorithm'''
+from random import randint
 
 def calculate_score(txn, bal, port):
+    score = randint(300, 900)
     myscore = {
-        'score': int(350),
-        'message': 'Test Message',
+        'score': int(score),
+        'message': f'Contratulations! Your got a ScoreBox credit score of {score} points',
     }
     return myscore
