@@ -5,4 +5,3 @@ from typing import Union
 
 class OpenSeaNFT(BaseModel):
     address: str
-

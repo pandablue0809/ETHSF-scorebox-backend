@@ -10,3 +10,5 @@ def home():
     '''Launch app'''
     return 'Server up'
 
+# app.include_router(nft.router)
+
