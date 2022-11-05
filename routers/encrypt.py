@@ -21,7 +21,7 @@ async def encrypt_score(item: Encrypt, db: Session = Depends(get_db)):
     - **wallet_address [str]**: address
     - **score_response [dict]**: output of another endpoint
     - **blockchain [str]**: which blockchain
-    - **is_encrypt [bool]**: 1 | 0
+    - **is_encrypt [bool]**: True | False
     - **permit_name Optional[str]**: custom name for encryption
 
     Returns:
