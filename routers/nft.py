@@ -1,7 +1,7 @@
 '''OpenSea endpoint'''
 from fastapi import APIRouter, status
 from supp.schemas import OpenSeaNFT
-from opensea import read_nfts
+from requ.opensea import read_nfts
 
 
 router = APIRouter(
