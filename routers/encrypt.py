@@ -1,8 +1,10 @@
 '''Off-chain encryptor'''
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends
+from sqlalchemy.orm import Session
 from supp.schemas import Encrypt
 from supp.rijndael import compress
 from supp.crud import add_row
+from supp.db import get_db
 
 router = APIRouter(
     prefix = '/cryptography',
@@ -11,7 +13,7 @@ router = APIRouter(
 
 
 @router.post('/encrypt', status_code=status.HTTP_200_OK)
-async def encrypt_score(item: Encrypt):
+async def encrypt_score(item: Encrypt, db: Session = Depends(get_db)):
     '''
     Encrypt a score message (off-chain)
 
