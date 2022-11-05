@@ -1,7 +1,7 @@
 '''fastapi App with its endpoints'''
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import nft, covalent
+from routers import nft, covalent, encrypt
 
 
 app = FastAPI()
@@ -33,4 +33,4 @@ def home():
 
 app.include_router(nft.router)
 app.include_router(covalent.router)
-
+app.include_router(encrypt.router)
