@@ -131,3 +131,4 @@ dmypy.json
 # virtual env
 /ScoreBox
 *.ipynb
+*zzz.py

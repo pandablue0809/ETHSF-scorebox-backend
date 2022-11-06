@@ -18,3 +18,6 @@ class Encrypt(BaseModel):
     blockchain: str
     is_encrypt: bool
     permit_name: Union[str, None] = None
+
+class PushPoll(BaseModel):
+    address: str
