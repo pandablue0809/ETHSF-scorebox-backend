@@ -10,7 +10,7 @@ class Covalent(BaseModel):
     chain_id: int
     eth_address: str
     covalent_key: str
-    #add live conversion from Coinmarketcap
+    coinmarketcap_key: str
 
 class Encrypt(BaseModel):
     wallet_address: str

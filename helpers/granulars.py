@@ -4,12 +4,6 @@ from datetime import datetime
 NOW = datetime.now().date()
 
 
-# # global variables
-# TOP_ERC = ["ETH", "WETH", "USDT", "MATIC", "MKR", "BAT", "CRO", "USDC",\
-#      "TUSD", "REP", "OMG", "LINK", "PAX", "HOT", "ZRX", "IOST", "HT", \
-#         "AOA", "ENJ", "MCO", "NEXO", "NET", "GUSD", "ENG", "LAMB"]
-
-
 scores = [300, 500, 560, 650, 740, 800, 870, 900]
 scalars = {
     'medians': [round(s/scores[-1], 2) for s in scores],
@@ -21,33 +15,47 @@ scalars = {
 
 
 def kyc(txn, balances, portfolio):
-    '''Award points for being a trusted user with legitimate txn history
-    '''
-    oldest = datetime.strptime(
-        txn['items'][-1]['block_signed_at'].split('T')[0], '%Y-%m-%d').date()
-    how_long = (NOW - oldest).days
+    '''Award points for being a trusted user with legitimate txn history'''
+    try:
+        oldest = datetime.strptime(
+            txn['items'][-1]['block_signed_at'].split('T')[0], '%Y-%m-%d').date()
+        how_long = (NOW - oldest).days
 
-    # Assign max score as long as the user owns a
-    # tot balance > $150, a credible transaction history,
-    # a portfolio, and a wallet opened > 3 months ago
-    if txn['items']\
-        and portfolio['items']\
-            and sum([b['quote'] for b in balances['items']]) > 150\
-        and how_long >= 90:
-        return 1
-    else:
-        return 0
+        # Assign max score as long as the user owns a
+        # tot balance > $150, a credible transaction history,
+        # a portfolio, and a wallet opened > 3 months ago
+        if txn['items']\
+            and portfolio['items']\
+                and sum([b['quote'] for b in balances['items']]) > 150\
+            and how_long >= 90:
+            score = 1
+        else:
+            score = 0
+    except Exception as e:
+        score = 0
+        print(str(e))
+
+    finally:
+        return score
 
 
 def oldest(txn, fb):
     '''Reward user for wallet longevity'''
-    oldest = datetime.strptime(
-        txn['items'][-1]['block_signed_at'].split('T')[0], '%Y-%m-%d').date()
-    how_long = (NOW - oldest).days
+    try:
+        oldest = datetime.strptime(
+            txn['items'][-1]['block_signed_at'].split('T')[0], '%Y-%m-%d').date()
+        how_long = (NOW - oldest).days
 
-    score = scalars['medians'][np.digitize(how_long, scalars['duration'], right=True)]
-    fb['oldest'] = how_long
-    return score
+        score = scalars['medians'][np.digitize(how_long, scalars['duration'], right=True)]
+        fb['oldest'] = how_long
+        
+    except Exception as e:
+        score = 0
+        fb['error'] = str(e)
+
+    finally:
+        return score
+
 
 
 def capital(balances, fb):
@@ -81,14 +89,22 @@ def volume(txn, fb):
 
 def dust(txn, fb):
     '''How many txn are legitimate and how many are dust?'''
-    legit = len([t for t in txn['items']
-        if t['successful'] and t['value_quote'] > 0])      
-    
-    legit_ratio = legit / len(txn['items'])
-    score = scalars['medians'][np.digitize(
-            legit_ratio, scalars['medians'], right=True)]
-    fb['dust'] = round(legit_ratio, 2)
-    return score
+    try:
+        legit = len([t for t in txn['items']
+            if t['successful'] and t['value_quote'] > 0])      
+        
+        legit_ratio = legit / len(txn['items'])
+        score = scalars['medians'][np.digitize(
+                legit_ratio, scalars['medians'], right=True)]
+        fb['dust'] = round(legit_ratio, 2)
+        return score
+        
+    except Exception as e:
+        score = 0
+        fb['error'] = str(e)
+
+    finally:
+        return score
 
 
 def frequency(txn, fb):

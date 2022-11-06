@@ -40,7 +40,7 @@ async def credit_score_covalent(item: Covalent):
             item.covalent_key
             )
 
-    out = calculate_score(txn, bal, por, item.chain_id)
+    out = calculate_score(txn, bal, por, item.coinmarketcap_key, item.chain_id)
 
     # Aggregate data and calculate score
     out['endpoint'] = f'/covalent/{CHAIN[item.chain_id]}'
