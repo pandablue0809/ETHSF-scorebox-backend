@@ -77,3 +77,27 @@ def volume(txn, fb):
         volume_avg, scalars['volume_per_txn'], right=True)]
     fb['volume'] = round(volume_avg, 2)
     return score
+
+
+def dust(txn, fb):
+    '''How many txn are legitimate and how many are dust?'''
+    legit = len([t for t in txn['items']
+        if t['successful'] and t['value_quote'] > 0])      
+    
+    legit_ratio = legit / len(txn['items'])
+    score = scalars['medians'][np.digitize(
+            legit_ratio, scalars['medians'], right=True)]
+    fb['dust'] = round(legit_ratio, 2)
+    return score
+
+
+def frequency(txn, fb):
+    '''How regular are txn for this user?'''
+    oldest = datetime.strptime(
+        txn['items'][-1]['block_signed_at'].split('T')[0], '%Y-%M-%d').date()
+    duration = int((NOW - oldest).days/30)  # months
+
+    frequency = round(len(txn['items']) / duration, 2)
+    score = scalars['medians'][np.digitize(frequency, scalars['frequency'], right=True)]
+    fb['frequency'] = f'{frequency} txn/month over {duration} months'
+    return score

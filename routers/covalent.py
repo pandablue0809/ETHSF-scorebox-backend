@@ -1,7 +1,7 @@
 '''Covalent endpoints'''
 from fastapi import APIRouter, status
 from supp.schemas import Covalent
-from supp.oracles import calculate_score
+from helpers.oracles import calculate_score
 from requ.covalentAPIs import covalent_bal_port, covalent_txn
 
 
@@ -25,7 +25,6 @@ async def credit_score_covalent(item: Covalent):
             item.eth_address,
             item.covalent_key
             )
-    print(type(txn))
 
     bal = covalent_bal_port(
             str(item.chain_id),
@@ -41,7 +40,7 @@ async def credit_score_covalent(item: Covalent):
             item.covalent_key
             )
 
-    out = calculate_score(txn, bal, por)
+    out = calculate_score(txn, bal, por, item.chain_id)
 
     # Aggregate data and calculate score
     out['endpoint'] = f'/covalent/{CHAIN[item.chain_id]}'
