@@ -186,7 +186,6 @@ def get_position(target):
         pass
     return (rank)
 
-
 def run_leaderboard(target):
     for item in ranked_list():
         url = "http://localhost:8080/leaderboard"
